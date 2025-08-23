@@ -10,20 +10,81 @@ import SwiftUI
 struct HomeView: View {
     var body: some View {
         TabView {
+            
             NavigationStack {
-                NavigationLink("Tap Me") {
-                    Text("Detail View")
-                        .toolbar(.hidden, for: .tabBar)
+                ScrollView{
+                    NavigationLink() {
+                        ExampleWidgetView()
+                    }
+                label:
+                    {
+                        ExampleWidgetView()
+                    }
+                    .navigationTitle("Widgets Collection")
+                    NavigationLink() {
+                        ExampleWidgetView()
+                    }
+                label:
+                    {
+                        ExampleWidgetView()
+                    }
+                    .navigationTitle("Widgets Collection")
+                    NavigationLink() {
+                        ExampleWidgetView()
+                    }
+                label:
+                    {
+                        ExampleWidgetView()
+                    }
+                    .navigationTitle("Widgets Collection")
+                    NavigationLink() {
+                        ExampleWidgetView()
+                    }
+                label:
+                    {
+                        ExampleWidgetView()
+                    }
+                    .navigationTitle("Widgets Collection")
+                    NavigationLink() {
+                        ExampleWidgetView()
+                    }
+                label:
+                    {
+                        ExampleWidgetView()
+                    }
+                    .navigationTitle("Widgets Collection")
                 }
-                .navigationTitle("Widgets Collection")
+                .toolbar {
+                    Button{
+                        
+                    }label:{
+                        Image(systemName: "plus")
+                        
+                    }              }
+                
+                .tabItem {
+                    Label("Home", systemImage: "house")
+                }
             }
-            .tabItem {
-                Label("Home", systemImage: "house")
+        }
+    }
+    
+    struct ExampleWidgetView: View {
+        var body: some View {
+            VStack{
+                VStack{
+                    Color.blue
+                    
+                }
+                .frame(width: 342, height: 164)
+                .clipShape(
+                    RoundedRectangle(cornerRadius: 21)
+                )
+                .padding()
             }
         }
     }
 }
-
 #Preview {
     HomeView()
 }
