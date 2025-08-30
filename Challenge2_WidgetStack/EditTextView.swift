@@ -11,13 +11,14 @@ struct EditTextView: View {
     @State var WidgetTextXAxis: Double = 200
     @State var WidgetTextYAxis: Double = 100
     @State var WidgetTextSize: Double = 50
+    @State var WidgetTextColor: Color = .black
     var body: some View {
         NavigationStack{
-        ScrollView {
-        VStack {
+            ScrollView {
+                VStack {
                     
-            ExampleWidgetView(WidgetText: $WidgetText, WidgetTextXAxis: $WidgetTextXAxis, WidgetTextYAxis: $WidgetTextYAxis, WidgetTextSize: $WidgetTextSize)
-           
+                    ExampleWidgetView(WidgetText: $WidgetText, WidgetTextXAxis: $WidgetTextXAxis, WidgetTextYAxis: $WidgetTextYAxis, WidgetTextSize: $WidgetTextSize, WidgetTextColor: $WidgetTextColor)
+                    
                     HStack {
                         Text("Text")
                             .padding(.trailing, 30)
@@ -31,17 +32,20 @@ struct EditTextView: View {
                     Slider(value: $WidgetTextYAxis, in: 30...170, step: 10)
                     Text("Y Axis: \(WidgetTextYAxis, specifier: "%.1f")")
                     Divider()
-            
-    Slider(value: $WidgetTextSize, in: 1...100, step: 1)
-            Text("Font Size: \(WidgetTextSize, specifier:"%.1f")")
-                    .padding(.leading, 50)
+                    Slider(value: $WidgetTextSize, in: 1...100, step: 1)
+                    Text("Font Size: \(WidgetTextSize, specifier:"%.1f")")
+                        .padding(.leading, 50)
+                    Divider()
+                    ColorPicker("Text Color", selection: $WidgetTextColor)
+                        .padding(.leading, 50)
+                        .padding(.trailing, 50)
                 }
+                .pickerStyle(.menu) // Or .wheel, .segmented, etc.
             }
             .navigationTitle(Text("Edit Text"))
         }
     }
 }
-
 #Preview {
     EditTextView()
 }

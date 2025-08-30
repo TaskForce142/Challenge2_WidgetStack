@@ -115,6 +115,7 @@ struct ExampleWidgetView: View {
     @Binding var WidgetTextXAxis: Double
     @Binding var WidgetTextYAxis: Double
     @Binding var WidgetTextSize: Double
+    @Binding var WidgetTextColor: Color
    var body: some View {
        ZStack{
            VStack{
@@ -129,6 +130,7 @@ struct ExampleWidgetView: View {
            Text(WidgetText)
                .position(x: CGFloat((WidgetTextXAxis)), y: CGFloat((WidgetTextYAxis)))
                .font(.system(size: CGFloat(WidgetTextSize)))
+               .foregroundColor(WidgetTextColor)
            
             
        }
