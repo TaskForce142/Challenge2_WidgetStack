@@ -14,6 +14,38 @@ struct HomeView: View {
             NavigationStack {
                 ScrollView{
                     NavigationLink() {
+                        ExampleWidgetView()
+                    }
+                label:
+                    {
+                        ExampleWidgetView()
+                    }
+                    .navigationTitle("Widgets Collection")
+                    NavigationLink() {
+                        ExampleWidgetView()
+                    }
+                label:
+                    {
+                        ExampleWidgetView()
+                    }
+                    .navigationTitle("Widgets Collection")
+                    NavigationLink() {
+                        ExampleWidgetView()
+                    }
+                label:
+                    {
+                        ExampleWidgetView()
+                    }
+                    .navigationTitle("Widgets Collection")
+                    NavigationLink() {
+                        ExampleWidgetView()
+                    }
+                label:
+                    {
+                        ExampleWidgetView()
+                    }
+                    .navigationTitle("Widgets Collection")
+                    NavigationLink() {
                         VStack{
                             ExampleWidgetView()
                             HStack{
@@ -91,6 +123,22 @@ struct HomeView: View {
         }
     }
     
+    struct ExampleWidgetView: View {
+        var body: some View {
+            VStack{
+                VStack{
+                    Color.blue
+                    
+                }
+                .frame(width: 342, height: 164)
+                .clipShape(
+                    RoundedRectangle(cornerRadius: 21)
+                )
+                .padding()
+            }
+        }
+    }
+    
 
 }
 
@@ -109,7 +157,6 @@ struct ExampleWidgetView: View {
        }
    }
 }
-
 #Preview {
     HomeView()
 }
