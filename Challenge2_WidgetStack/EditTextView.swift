@@ -7,17 +7,18 @@
 import SwiftUI
 import Foundation
 struct EditTextView: View {
-    @State var WidgetText: String = ""
-    @State var WidgetTextXAxis: Double = 200
-    @State var WidgetTextYAxis: Double = 100
-    @State var WidgetTextSize: Double = 50
-    @State var WidgetTextColor: Color = .black
+    @State private var WidgetText: String = ""
+    @State private var WidgetTextXAxis: Double = 200
+    @State private var WidgetTextYAxis: Double = 100
+    @State private var WidgetTextSize: Double = 50
+    @State private var WidgetTextColor: Color = .black
+    @State private var WidgetRandomQuote: Bool = false
     var body: some View {
         NavigationStack{
             ScrollView {
                 VStack {
                     
-                    ExampleWidgetView(WidgetText: $WidgetText, WidgetTextXAxis: $WidgetTextXAxis, WidgetTextYAxis: $WidgetTextYAxis, WidgetTextSize: $WidgetTextSize, WidgetTextColor: $WidgetTextColor)
+                    ExampleWidgetView(WidgetText: $WidgetText, WidgetTextXAxis: $WidgetTextXAxis, WidgetTextYAxis: $WidgetTextYAxis, WidgetTextSize: $WidgetTextSize, WidgetTextColor: $WidgetTextColor, WidgetRandomQuote: $WidgetRandomQuote)
                     
                     HStack {
                         Text("Text")
@@ -40,7 +41,6 @@ struct EditTextView: View {
                         .padding(.leading, 50)
                         .padding(.trailing, 50)
                 }
-                .pickerStyle(.menu) // Or .wheel, .segmented, etc.
             }
             .navigationTitle(Text("Edit Text"))
         }

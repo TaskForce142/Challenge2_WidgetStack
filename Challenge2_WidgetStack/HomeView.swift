@@ -116,6 +116,7 @@ struct ExampleWidgetView: View {
     @Binding var WidgetTextYAxis: Double
     @Binding var WidgetTextSize: Double
     @Binding var WidgetTextColor: Color
+    @Binding var WidgetRandomQuote: Bool
    var body: some View {
        ZStack{
            VStack{
