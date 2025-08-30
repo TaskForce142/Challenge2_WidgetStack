@@ -14,38 +14,6 @@ struct HomeView: View {
             NavigationStack {
                 ScrollView{
                     NavigationLink() {
-                        ExampleWidgetView()
-                    }
-                label:
-                    {
-                        ExampleWidgetView()
-                    }
-                    .navigationTitle("Widgets Collection")
-                    NavigationLink() {
-                        ExampleWidgetView()
-                    }
-                label:
-                    {
-                        ExampleWidgetView()
-                    }
-                    .navigationTitle("Widgets Collection")
-                    NavigationLink() {
-                        ExampleWidgetView()
-                    }
-                label:
-                    {
-                        ExampleWidgetView()
-                    }
-                    .navigationTitle("Widgets Collection")
-                    NavigationLink() {
-                        ExampleWidgetView()
-                    }
-                label:
-                    {
-                        ExampleWidgetView()
-                    }
-                    .navigationTitle("Widgets Collection")
-                    NavigationLink() {
                         VStack{
                             ExampleWidgetView()
                             HStack{
@@ -143,17 +111,26 @@ struct HomeView: View {
 }
 
 struct ExampleWidgetView: View {
+    @Binding var WidgetText: String
+    @Binding var WidgetTextXAxis: Double
+    @Binding var WidgetTextYAxis: Double
+    @Binding var WidgetTextSize: Double
    var body: some View {
-       VStack{
+       ZStack{
            VStack{
                Color.blue
                
            }
            .frame(width: 342, height: 164)
            .clipShape(
-               RoundedRectangle(cornerRadius: 21)
+            RoundedRectangle(cornerRadius: 21)
            )
            .padding()
+           Text(WidgetText)
+               .position(x: CGFloat((WidgetTextXAxis)), y: CGFloat((WidgetTextYAxis)))
+               .font(.system(size: CGFloat(WidgetTextSize)))
+           
+            
        }
    }
 }
