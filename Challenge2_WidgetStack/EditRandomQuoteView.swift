@@ -142,11 +142,11 @@ struct EditRandomQuoteView: View {
                                 }
                             }
                     }
-                        VStack {
-                            Text("Text Size: \(Int(widgetTextSize))")
-                            Slider(value: $widgetTextSize, in: 1...50, step: 1)
-                                .padding(.horizontal)
-                        }
+                    VStack {
+                        Text("Text Size: \(Int(widgetTextSize))")
+                        Slider(value: $widgetTextSize, in: 1...50, step: 1)
+                            .padding(.horizontal)
+                    }
                 }
             }
         }

@@ -66,6 +66,21 @@ struct HomeView: View {
                                 }
                                 .navigationTitle("Edit")
                             }
+                            Divider()
+                            HStack{
+                                Text("Random Quote")
+                                    .padding(.leading, 50)
+                                
+                                Spacer()
+                                NavigationLink{
+                                    EditRandomQuoteView()
+                                }label:{
+                                    Image(systemName: "chevron.right")
+                                        .padding(.trailing, 50)
+                                        .foregroundStyle(Color.black)
+                                }
+                            }
+                            
                         }
                         Spacer()
                     }
@@ -107,7 +122,7 @@ struct HomeView: View {
         }
     }
     
-
+    
 }
 
 struct ExampleWidgetView: View {
@@ -117,25 +132,25 @@ struct ExampleWidgetView: View {
     @Binding var WidgetTextSize: Double
     @Binding var WidgetTextColor: Color
     @Binding var WidgetRandomQuote: Bool
-   var body: some View {
-       ZStack{
-           VStack{
-               Color.blue
-               
-           }
-           .frame(width: 342, height: 164)
-           .clipShape(
-            RoundedRectangle(cornerRadius: 21)
-           )
-           .padding()
-           Text(WidgetText)
-               .position(x: CGFloat((WidgetTextXAxis)), y: CGFloat((WidgetTextYAxis)))
-               .font(.system(size: CGFloat(WidgetTextSize)))
-               .foregroundColor(WidgetTextColor)
-           
-            
-       }
-   }
+    var body: some View {
+        ZStack{
+            VStack{
+                Color.blue
+                
+            }
+            .frame(width: 342, height: 164)
+            .clipShape(
+                RoundedRectangle(cornerRadius: 21)
+            )
+            .padding()
+            Text(WidgetText)
+                .frame(width: 342, height: 164)
+                .minimumScaleFactor(0.5)
+                .position(x: CGFloat((WidgetTextXAxis)), y: CGFloat((WidgetTextYAxis)))
+                .font(.system(size: CGFloat(WidgetTextSize)))
+                .foregroundColor(WidgetTextColor)
+        }
+    }
 }
 #Preview {
     HomeView()
