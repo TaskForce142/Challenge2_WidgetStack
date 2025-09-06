@@ -6,6 +6,12 @@
 import SwiftUI
 
 struct EditClockView: View {
+    @State private var WidgetText: String = ""
+    @State private var WidgetTextXAxis: Double = 200
+    @State private var WidgetTextYAxis: Double = 100
+    @State private var WidgetTextSize: Double = 50
+    @State private var WidgetTextColor: Color = .black
+    @State private var WidgetRandomQuote: Bool = false
     @State private var currentTime = Date()
     @State private var useAnalogClock = false
     @State private var selectedTheme = "Light"
@@ -16,7 +22,7 @@ struct EditClockView: View {
         VStack(spacing: 20) {
             Toggle("Analog Clock Mode", isOn: $useAnalogClock)
                 .padding()
-
+            ExampleWidgetView(WidgetText: $WidgetText, WidgetTextXAxis: $WidgetTextXAxis, WidgetTextYAxis: $WidgetTextYAxis, WidgetTextSize: $WidgetTextSize, WidgetTextColor: $WidgetTextColor, WidgetRandomQuote: $WidgetRandomQuote)
             if useAnalogClock {
                 AnalogClockView(theme: selectedTheme)
             } else {
