@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var widgets: [UUID] = []
+
     var body: some View {
         TabView {
             NavigationStack {
@@ -93,9 +95,10 @@ struct HomeView: View {
                     }
                     .navigationTitle("Widgets Collection")
                 }
+                
                 .toolbar {
                     Button {
-                        // Add action here
+                        widgets.append(UUID())
                     } label: {
                         Image(systemName: "plus")
                     }
