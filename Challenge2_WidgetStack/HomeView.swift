@@ -8,96 +8,101 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var widgets: [UUID] = []
+    @State private var widgets: [UUID] = [] // Track dynamically added widgets
 
     var body: some View {
         TabView {
             NavigationStack {
                 ScrollView {
-                    NavigationLink {
-                        VStack {
+                    VStack {
+                        // Display all dynamically added widgets
+                        ForEach(widgets, id: \.self) { _ in
                             SimpleExampleWidgetView()
-                            
-                            HStack {
-                                Text("Layers")
-                                    .padding()
-                                    .foregroundStyle(Color.gray)
-                                Spacer()
-                            }
-                            
-                            Divider()
-                            
-                            HStack {
-                                Text("Text")
-                                    .padding(.leading, 50)
-                                Spacer()
-                                NavigationLink {
-                                    // Fixed: Pass an actual string value
-                                    EditTextView(WidgetImage: "default-image")
-                                } label: {
-                                    Image(systemName: "chevron.right")
-                                        .padding(.trailing, 50)
-                                        .foregroundStyle(Color.black)
-                                }
-                            }
-                            
-                            Divider()
-                            
-                            HStack {
-                                Text("Image")
-                                    .padding(.leading, 50)
-                                Spacer()
-                                NavigationLink {
-                                    EditImageView()
-                                } label: {
-                                    Image(systemName: "chevron.right")
-                                        .padding(.trailing, 50)
-                                        .foregroundStyle(Color.black)
-                                }
-                            }
-                            
-                            Divider()
-                            
-                            HStack {
-                                Text("Clock")
-                                    .padding(.leading, 50)
-                                Spacer()
-                                NavigationLink {
-                                    EditClockView()
-                                } label: {
-                                    Image(systemName: "chevron.right")
-                                        .padding(.trailing, 50)
-                                        .foregroundStyle(Color.black)
-                                }
-                            }
-                            
-                            Divider()
-                            
-                            HStack {
-                                Text("Random Quote")
-                                    .padding(.leading, 50)
-                                Spacer()
-                                NavigationLink {
-                                    EditRandomQuoteView()
-                                } label: {
-                                    Image(systemName: "chevron.right")
-                                        .padding(.trailing, 50)
-                                        .foregroundStyle(Color.black)
-                                }
-                            }
-                            
-                            Spacer()
                         }
-                        .navigationTitle("Edit")
-                    } label: {
-                        // Use the simple widget view for the navigation link label
-                        SimpleExampleWidgetView()
+
+                        NavigationLink {
+                            VStack {
+                                SimpleExampleWidgetView()
+                                
+                                HStack {
+                                    Text("Layers")
+                                        .padding()
+                                        .foregroundStyle(Color.gray)
+                                    Spacer()
+                                }
+                                
+                                Divider()
+                                
+                                HStack {
+                                    Text("Text")
+                                        .padding(.leading, 50)
+                                    Spacer()
+                                    NavigationLink {
+                                        EditTextView(WidgetImage: "default-image")
+                                    } label: {
+                                        Image(systemName: "chevron.right")
+                                            .padding(.trailing, 50)
+                                            .foregroundStyle(Color.black)
+                                    }
+                                }
+                                
+                                Divider()
+                                
+                                HStack {
+                                    Text("Image")
+                                        .padding(.leading, 50)
+                                    Spacer()
+                                    NavigationLink {
+                                        EditImageView()
+                                    } label: {
+                                        Image(systemName: "chevron.right")
+                                            .padding(.trailing, 50)
+                                            .foregroundStyle(Color.black)
+                                    }
+                                }
+                                
+                                Divider()
+                                
+                                HStack {
+                                    Text("Clock")
+                                        .padding(.leading, 50)
+                                    Spacer()
+                                    NavigationLink {
+                                        EditClockView()
+                                    } label: {
+                                        Image(systemName: "chevron.right")
+                                            .padding(.trailing, 50)
+                                            .foregroundStyle(Color.black)
+                                    }
+                                }
+                                
+                                Divider()
+                                
+                                HStack {
+                                    Text("Random Quote")
+                                        .padding(.leading, 50)
+                                    Spacer()
+                                    NavigationLink {
+                                        EditRandomQuoteView()
+                                    } label: {
+                                        Image(systemName: "chevron.right")
+                                            .padding(.trailing, 50)
+                                            .foregroundStyle(Color.black)
+                                    }
+                                }
+                                
+                                Spacer()
+                            }
+                            .navigationTitle("Edit")
+                        } label: {
+                            SimpleExampleWidgetView()
+                        }
+                        .navigationTitle("Widgets Collection")
                     }
-                    .navigationTitle("Widgets Collection")
                 }
-                
                 .toolbar {
                     Button {
+                        // Add a new blue rectangle widget
                         widgets.append(UUID())
                     } label: {
                         Image(systemName: "plus")
@@ -169,3 +174,4 @@ struct ExampleWidgetView: View {
 #Preview {
     HomeView()
 }
+

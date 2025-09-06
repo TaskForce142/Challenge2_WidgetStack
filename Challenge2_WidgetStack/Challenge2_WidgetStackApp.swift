@@ -11,7 +11,7 @@ import SwiftUI
 struct Challenge2_WidgetStackApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
         }
     }
 }
