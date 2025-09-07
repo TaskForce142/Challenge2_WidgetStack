@@ -118,13 +118,13 @@ struct EditRandomQuoteView: View {
     @State private var widgetTextSize: Double = 50
     @State private var widgetTextColor: Color = .black
     @State private var isWidgetRandomQuoteEnabled = false
-    @State private var widgetImage: String = "quote-background" // Add this for ExampleWidgetView
+    @State private var widgetImage: String = "quote-background"
     
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    // Fixed: Added missing WidgetImage parameter
+                   
                     ExampleWidgetView(
                         WidgetImage: widgetImage,
                         WidgetColor: $widgetColor,
@@ -150,7 +150,7 @@ struct EditRandomQuoteView: View {
                         }
                         .padding(.horizontal)
                         
-                        // Button to generate new random quote when toggle is on
+                      
                         if isWidgetRandomQuoteEnabled {
                             Button("Generate New Quote") {
                                 widgetText = famousQuotes.randomElement() ?? "No quote found"

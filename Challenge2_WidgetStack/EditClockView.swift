@@ -1,6 +1,7 @@
 //
 //  EditClockView.swift
-//  Digital Clock App
+//
+//  Created by Chan Yap Long on 30/8/25.
 //
 import SwiftUI
 import Foundation
@@ -26,7 +27,6 @@ struct EditClockView: View {
             ScrollView {
                 VStack(spacing: 20) {
 
-                    // Widget Preview with clock overlay
                     ZStack {
                         ExampleWidgetView(
                             WidgetImage: widgetImage,
@@ -41,7 +41,6 @@ struct EditClockView: View {
                     }
                     .overlay(clockOverlay)
 
-                    // Controls Section
                     VStack(spacing: 15) {
                         HStack {
                             Text("Clock Type").font(.headline)
@@ -92,8 +91,6 @@ struct EditClockView: View {
             updateClockText()
         }
     }
-
-    // MARK: - Clock Overlay
     var clockOverlay: some View {
         Group {
             if useAnalogClock {
@@ -106,7 +103,7 @@ struct EditClockView: View {
                 DigitalClockView(
                     currentTime: $currentTime,
                     theme: selectedTheme,
-                    size: CGFloat(widgetClockSize * 0.3) // font scales with size
+                    size: CGFloat(widgetClockSize * 0.3)
                 )
             }
         }
@@ -162,7 +159,6 @@ struct EditClockView: View {
     }
 }
 
-// MARK: - Analog Clock
 struct AnalogClockView: View {
     @Binding var currentTime: Date
     var theme: String
@@ -269,7 +265,6 @@ struct DigitalClockView: View {
     }
 }
 
-// MARK: - Preview
 #Preview {
     EditClockView()
 }

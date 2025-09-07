@@ -8,14 +8,13 @@
 import SwiftUI
 
 struct HomeView: View {
-    @State private var widgets: [UUID] = [] // Track dynamically added widgets
+    @State private var widgets: [UUID] = []
 
     var body: some View {
         TabView {
             NavigationStack {
                 ScrollView {
                     VStack {
-                        // Display all dynamically added widgets
                         ForEach(widgets, id: \.self) { _ in
                             SimpleExampleWidgetView()
                         }
@@ -102,7 +101,6 @@ struct HomeView: View {
                 }
                 .toolbar {
                     Button {
-                        // Add a new blue rectangle widget
                         widgets.append(UUID())
                     } label: {
                         Image(systemName: "plus")
@@ -112,9 +110,7 @@ struct HomeView: View {
         }
     }
 }
-
-// Simple widget view for display purposes (no bindings required)
-struct SimpleExampleWidgetView: View {
+    struct SimpleExampleWidgetView: View {
     var body: some View {
         VStack {
             Color.blue
@@ -124,9 +120,7 @@ struct SimpleExampleWidgetView: View {
         .padding()
     }
 }
-
-// Full-featured widget view for editing (requires bindings)
-struct ExampleWidgetView: View {
+    struct ExampleWidgetView: View {
     var WidgetImage: String
     @Binding var WidgetColor: Color
     @Binding var WidgetText: String
@@ -138,15 +132,12 @@ struct ExampleWidgetView: View {
     
     var body: some View {
         ZStack {
-            // Background
             VStack {
                 Color(WidgetColor)
             }
             .frame(width: 342, height: 164)
             .clipShape(RoundedRectangle(cornerRadius: 21))
             .padding()
-            
-            // Image layer (if you want to show an image)
             if !WidgetImage.isEmpty {
                 Image(WidgetImage)
                     .resizable()
@@ -155,8 +146,6 @@ struct ExampleWidgetView: View {
                     .clipShape(RoundedRectangle(cornerRadius: 21))
                     .padding()
             }
-            
-            // Text overlay
             if !WidgetText.isEmpty {
                 Text(WidgetText)
                     .font(.system(size: CGFloat(WidgetTextSize)))
