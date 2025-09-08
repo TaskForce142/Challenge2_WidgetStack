@@ -52,7 +52,7 @@ struct EditImageView: View {
     @State private var selectedImageData: Data?
     
     @State private var selectedColorName: String = "Blue"
-    @State private var widgetImage: String = "default-image" // Added missing widget image
+    @State private var widgetImage: String = "default-image" 
     @State private var widgetText: String = ""
     @State private var widgetTextXAxis: Double = 200
     @State private var widgetTextYAxis: Double = 100
@@ -106,7 +106,6 @@ struct EditImageView: View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    // Widget Preview with selected image overlay
                     ZStack {
                         ExampleWidgetView(
                             WidgetImage: widgetImage,
@@ -119,20 +118,18 @@ struct EditImageView: View {
                             WidgetRandomQuote: $widgetRandomQuote
                         )
                         
-                        // Overlay selected image if available
                         if let avatarImage {
                             avatarImage
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                                 .frame(width: 342, height: 164)
                                 .clipShape(RoundedRectangle(cornerRadius: 21))
-                                .opacity(0.8) // Make it slightly transparent to see background color
+                                .opacity(0.8)
                         }
                     }
-                    
-                    // Controls Section
+         
                     VStack(spacing: 15) {
-                        // Background Color Picker
+                     
                         VStack(alignment: .leading) {
                             Text("Background Color")
                                 .font(.headline)
@@ -154,7 +151,6 @@ struct EditImageView: View {
                         
                         Divider()
                         
-                        // Photo Picker Section
                         VStack(alignment: .leading) {
                             Text("Widget Image")
                                 .font(.headline)
@@ -189,7 +185,7 @@ struct EditImageView: View {
                         }
                         .padding(.horizontal)
                         
-                        // Image preview (smaller version)
+                
                         if let avatarImage {
                             VStack {
                                 Text("Selected Image Preview")

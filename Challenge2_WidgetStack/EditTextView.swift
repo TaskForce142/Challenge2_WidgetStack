@@ -17,9 +17,8 @@ struct EditTextView: View {
     @State var WidgetTextSize: Double = 50
     @State var WidgetTextColor: Color = .black
     @State var WidgetRandomQuote: Bool = false
-    @State var WidgetImage: String // Remove the default value here since it needs to be passed in
+    @State var WidgetImage: String
     
-    // Add an initializer to handle the required WidgetImage parameter
     init(WidgetImage: String) {
         self._WidgetImage = State(initialValue: WidgetImage)
     }
@@ -59,5 +58,5 @@ struct EditTextView: View {
 }
 
 #Preview {
-    EditTextView(WidgetImage: "example-image") // Pass a string value for WidgetImage
+    EditTextView(WidgetImage: "example-image") 
 }
