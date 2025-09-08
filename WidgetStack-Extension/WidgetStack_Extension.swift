@@ -45,66 +45,62 @@ struct WidgetStack_ExtensionEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        // OLD CODE (replace this):
-        // VStack {
-        //     Text("Time:")
-        //     Text(entry.date, style: .time)
-        // }
-        
-        // NEW CODE (analog clock):
+        // CHANGED: Replace analog clock with app data
         ZStack {
-            // Clock face
-            Circle()
-                .stroke(Color.primary, lineWidth: 4)
-                .background(Circle().fill(Color(.systemBackground)))
+            // Background color from your app
+            Rectangle()
+                .fill(loadBackgroundColor())
             
-            // Hour markers
-            ForEach(1...12, id: \.self) { hour in
-                Rectangle()
-                    .fill(Color.primary)
-                    .frame(width: 2, height: 8)
-                    .offset(y: -35)
-                    .rotationEffect(.degrees(Double(hour) * 30))
+            // Your custom text from the app
+            if !loadWidgetText().isEmpty {
+                Text(loadWidgetText())
+                    .font(.system(size: CGFloat(loadTextSize() / 3))) // Scale down for widget
+                    .foregroundColor(loadTextColor())
+                    .multilineTextAlignment(.center)
+                    .lineLimit(3)
+                    .padding(8)
+            } else {
+                // Default content when no text is set
+                
             }
-            
-            // Hour hand
-            Rectangle()
-                .fill(Color.primary)
-                .frame(width: 3, height: 20)
-                .offset(y: -10)
-                .rotationEffect(.degrees(hourAngle(from: entry.date)))
-            
-            // Minute hand
-            Rectangle()
-                .fill(Color.primary)
-                .frame(width: 2, height: 30)
-                .offset(y: -15)
-                .rotationEffect(.degrees(minuteAngle(from: entry.date)))
-            
-            // Center dot
-            Circle()
-                .fill(Color.primary)
-                .frame(width: 6, height: 6)
         }
-        .padding()
         .widgetURL(URL(string: "challenge2://open"))
     }
     
-    // ADD these helper functions inside the struct:
-    private func hourAngle(from date: Date) -> Double {
-        let calendar = Calendar.current
-        let hour = calendar.component(.hour, from: date) % 12
-        let minute = calendar.component(.minute, from: date)
-        return Double(hour) * 30 + Double(minute) * 0.5
+    // ADDED: Helper functions to load shared data
+    private func loadWidgetText() -> String {
+        guard let sharedDefaults = UserDefaults(suiteName: "group.yourcompany.challenge2.widgets") else {
+            return ""
+        }
+        return sharedDefaults.string(forKey: "savedWidgetText") ?? ""
     }
     
-    private func minuteAngle(from date: Date) -> Double {
-        let calendar = Calendar.current
-        let minute = calendar.component(.minute, from: date)
-        return Double(minute) * 6
+    private func loadTextSize() -> Double {
+        guard let sharedDefaults = UserDefaults(suiteName: "group.yourcompany.challenge2.widgets") else {
+            return 50
+        }
+        let size = sharedDefaults.double(forKey: "savedTextSize")
+        return size == 0 ? 50 : size
+    }
+    
+    private func loadTextColor() -> Color {
+        guard let sharedDefaults = UserDefaults(suiteName: "group.yourcompany.challenge2.widgets"),
+              let colorData = sharedDefaults.data(forKey: "savedTextColor"),
+              let uiColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(colorData) as? UIColor else {
+            return .black
+        }
+        return Color(uiColor)
+    }
+    
+    private func loadBackgroundColor() -> Color {
+        guard let sharedDefaults = UserDefaults(suiteName: "group.yourcompany.challenge2.widgets"),
+              let bgColorData = sharedDefaults.data(forKey: "savedBGColor"),
+              let uiBGColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(bgColorData) as? UIColor else {
+            return .blue
+        }
+        return Color(uiBGColor)
     }
 }
-
 
 struct WidgetStack_Extension: Widget {
     let kind: String = "WidgetStack_Extension"

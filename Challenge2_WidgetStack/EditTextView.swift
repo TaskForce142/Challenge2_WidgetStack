@@ -1,12 +1,6 @@
-//
-//  EditTextView.swift
-//  Challenge2_WidgetStack
-//
-//  Created by Chan Yap Long on 30/8/25.
-//
-
 import SwiftUI
 import Foundation
+import WidgetKit
 
 struct EditTextView: View {
     
@@ -51,8 +45,8 @@ struct EditTextView: View {
                         .padding(.leading, 50)
                         .padding(.trailing, 50)
                     
-                    // Add Save button to persist data
-                    Button("Save") {
+                    // Save button that updates both app and widget
+                    Button("Save & Update Widget") {
                         // Save data using UserDefaults
                         UserDefaults.standard.set(WidgetText, forKey: "savedWidgetText")
                         UserDefaults.standard.set(WidgetTextXAxis, forKey: "savedXAxis")
@@ -66,6 +60,24 @@ struct EditTextView: View {
                         if let bgColorData = try? NSKeyedArchiver.archivedData(withRootObject: UIColor(WidgetColor), requiringSecureCoding: false) {
                             UserDefaults.standard.set(bgColorData, forKey: "savedBGColor")
                         }
+                        
+                        // ALSO save to shared container if available
+                        if let sharedDefaults = UserDefaults(suiteName: "group.yourcompany.challenge2.widgets") {
+                            sharedDefaults.set(WidgetText, forKey: "savedWidgetText")
+                            sharedDefaults.set(WidgetTextXAxis, forKey: "savedXAxis")
+                            sharedDefaults.set(WidgetTextYAxis, forKey: "savedYAxis")
+                            sharedDefaults.set(WidgetTextSize, forKey: "savedTextSize")
+                            
+                            if let colorData = try? NSKeyedArchiver.archivedData(withRootObject: UIColor(WidgetTextColor), requiringSecureCoding: false) {
+                                sharedDefaults.set(colorData, forKey: "savedTextColor")
+                            }
+                            if let bgColorData = try? NSKeyedArchiver.archivedData(withRootObject: UIColor(WidgetColor), requiringSecureCoding: false) {
+                                sharedDefaults.set(bgColorData, forKey: "savedBGColor")
+                            }
+                        }
+                        
+                        // Force widget refresh
+                        WidgetCenter.shared.reloadAllTimelines()
                     }
                     .buttonStyle(.borderedProminent)
                     .padding()
@@ -80,24 +92,28 @@ struct EditTextView: View {
     }
     
     private func loadSavedData() {
+        // Try shared container first, then fallback to regular UserDefaults
+        let sharedDefaults = UserDefaults(suiteName: "group.yourcompany.challenge2.widgets")
+        let defaults = sharedDefaults ?? UserDefaults.standard
+        
         // Load text data
-        WidgetText = UserDefaults.standard.string(forKey: "savedWidgetText") ?? ""
-        WidgetTextXAxis = UserDefaults.standard.double(forKey: "savedXAxis")
+        WidgetText = defaults.string(forKey: "savedWidgetText") ?? ""
+        WidgetTextXAxis = defaults.double(forKey: "savedXAxis")
         if WidgetTextXAxis == 0 { WidgetTextXAxis = 200 } // Default value
         
-        WidgetTextYAxis = UserDefaults.standard.double(forKey: "savedYAxis")
+        WidgetTextYAxis = defaults.double(forKey: "savedYAxis")
         if WidgetTextYAxis == 0 { WidgetTextYAxis = 100 } // Default value
         
-        WidgetTextSize = UserDefaults.standard.double(forKey: "savedTextSize")
+        WidgetTextSize = defaults.double(forKey: "savedTextSize")
         if WidgetTextSize == 0 { WidgetTextSize = 50 } // Default value
         
         // Load colors
-        if let colorData = UserDefaults.standard.data(forKey: "savedTextColor"),
+        if let colorData = defaults.data(forKey: "savedTextColor"),
            let uiColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(colorData) as? UIColor {
             WidgetTextColor = Color(uiColor)
         }
         
-        if let bgColorData = UserDefaults.standard.data(forKey: "savedBGColor"),
+        if let bgColorData = defaults.data(forKey: "savedBGColor"),
            let uiBGColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(bgColorData) as? UIColor {
             WidgetColor = Color(uiBGColor)
         }
