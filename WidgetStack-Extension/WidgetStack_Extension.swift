@@ -45,15 +45,66 @@ struct WidgetStack_ExtensionEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        VStack {
-            Text("Time:")
-            Text(entry.date, style: .time)
-
-            Text("Favorite Emoji:")
-            Text(entry.configuration.favoriteEmoji)
+        // OLD CODE (replace this):
+        // VStack {
+        //     Text("Time:")
+        //     Text(entry.date, style: .time)
+        // }
+        
+        // NEW CODE (analog clock):
+        ZStack {
+            // Clock face
+            Circle()
+                .stroke(Color.primary, lineWidth: 4)
+                .background(Circle().fill(Color(.systemBackground)))
+            
+            // Hour markers
+            ForEach(1...12, id: \.self) { hour in
+                Rectangle()
+                    .fill(Color.primary)
+                    .frame(width: 2, height: 8)
+                    .offset(y: -35)
+                    .rotationEffect(.degrees(Double(hour) * 30))
+            }
+            
+            // Hour hand
+            Rectangle()
+                .fill(Color.primary)
+                .frame(width: 3, height: 20)
+                .offset(y: -10)
+                .rotationEffect(.degrees(hourAngle(from: entry.date)))
+            
+            // Minute hand
+            Rectangle()
+                .fill(Color.primary)
+                .frame(width: 2, height: 30)
+                .offset(y: -15)
+                .rotationEffect(.degrees(minuteAngle(from: entry.date)))
+            
+            // Center dot
+            Circle()
+                .fill(Color.primary)
+                .frame(width: 6, height: 6)
         }
+        .padding()
+        .widgetURL(URL(string: "challenge2://open"))
+    }
+    
+    // ADD these helper functions inside the struct:
+    private func hourAngle(from date: Date) -> Double {
+        let calendar = Calendar.current
+        let hour = calendar.component(.hour, from: date) % 12
+        let minute = calendar.component(.minute, from: date)
+        return Double(hour) * 30 + Double(minute) * 0.5
+    }
+    
+    private func minuteAngle(from date: Date) -> Double {
+        let calendar = Calendar.current
+        let minute = calendar.component(.minute, from: date)
+        return Double(minute) * 6
     }
 }
+
 
 struct WidgetStack_Extension: Widget {
     let kind: String = "WidgetStack_Extension"
