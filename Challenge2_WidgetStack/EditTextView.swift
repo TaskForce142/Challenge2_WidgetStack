@@ -47,7 +47,7 @@ struct EditTextView: View {
                     
                     // Save button that updates both app and widget
                     Button("Save & Update Widget") {
-                        // Save data using UserDefaults
+                        
                         UserDefaults.standard.set(WidgetText, forKey: "savedWidgetText")
                         UserDefaults.standard.set(WidgetTextXAxis, forKey: "savedXAxis")
                         UserDefaults.standard.set(WidgetTextYAxis, forKey: "savedYAxis")
@@ -92,7 +92,7 @@ struct EditTextView: View {
     }
     
     private func loadSavedData() {
-        // Try shared container first, then fallback to regular UserDefaults
+        
         let sharedDefaults = UserDefaults(suiteName: "group.yourcompany.challenge2.widgets")
         let defaults = sharedDefaults ?? UserDefaults.standard
         

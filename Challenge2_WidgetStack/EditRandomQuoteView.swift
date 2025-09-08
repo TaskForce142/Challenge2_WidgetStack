@@ -124,7 +124,7 @@ struct EditRandomQuoteView: View {
         NavigationStack {
             ScrollView {
                 VStack {
-                   
+                    
                     ExampleWidgetView(
                         WidgetImage: widgetImage,
                         WidgetColor: $widgetColor,
@@ -135,64 +135,72 @@ struct EditRandomQuoteView: View {
                         WidgetTextColor: $widgetTextColor,
                         WidgetRandomQuote: $isWidgetRandomQuoteEnabled
                     )
-                    
-                    VStack(spacing: 20) {
-                        HStack {
-                            Toggle("Generate Random Quote", isOn: $isWidgetRandomQuoteEnabled)
-                                .onChange(of: isWidgetRandomQuoteEnabled) { oldValue, newValue in
-                                    if newValue {
-                                        widgetText = famousQuotes.randomElement() ?? "No quote found"
-                                    } else {
-                                        widgetText = ""
-                                    }
-                                }
-                            Spacer()
-                        }
-                        .padding(.horizontal)
+                    Button("Save & Update Widget") {
                         
-                      
-                        if isWidgetRandomQuoteEnabled {
-                            Button("Generate New Quote") {
-                                widgetText = famousQuotes.randomElement() ?? "No quote found"
-                            }
-                            .buttonStyle(.bordered)
-                        }
-                        
-                        Divider()
-                        
-                        VStack {
-                            Text("Text Size: \(Int(widgetTextSize))")
-                            Slider(value: $widgetTextSize, in: 8...50, step: 1)
-                                .padding(.horizontal)
-                        }
-                        
-                        Divider()
-                        
-                        VStack {
-                            Text("X Position: \(Int(widgetTextXAxis))")
-                            Slider(value: $widgetTextXAxis, in: 50...350, step: 10)
-                                .padding(.horizontal)
-                        }
-                        
-                        VStack {
-                            Text("Y Position: \(Int(widgetTextYAxis))")
-                            Slider(value: $widgetTextYAxis, in: 30...170, step: 10)
-                                .padding(.horizontal)
-                        }
-                        
-                        Divider()
-                        
-                        ColorPicker("Text Color", selection: $widgetTextColor)
-                            .padding(.horizontal)
+                        UserDefaults.standard.set(widgetText, forKey: "savedWidgetText")
+                        UserDefaults.standard.set(widgetTextXAxis, forKey: "savedXAxis")
+                        UserDefaults.standard.set(widgetTextYAxis, forKey: "savedYAxis")
+                        UserDefaults.standard.set(widgetTextSize, forKey: "savedTextSize")
                     }
                     .padding()
+                        VStack(spacing: 20) {
+                            HStack {
+                                Toggle("Generate Random Quote", isOn: $isWidgetRandomQuoteEnabled)
+                                    .onChange(of: isWidgetRandomQuoteEnabled) { oldValue, newValue in
+                                        if newValue {
+                                            widgetText = famousQuotes.randomElement() ?? "No quote found"
+                                        } else {
+                                            widgetText = ""
+                                        }
+                                    }
+                                Spacer()
+                            }
+                            .padding(.horizontal)
+                            
+                            
+                            if isWidgetRandomQuoteEnabled {
+                                Button("Generate New Quote") {
+                                    widgetText = famousQuotes.randomElement() ?? "No quote found"
+                                }
+                                .buttonStyle(.bordered)
+                            }
+                            
+                            Divider()
+                            
+                            VStack {
+                                Text("Text Size: \(Int(widgetTextSize))")
+                                Slider(value: $widgetTextSize, in: 8...50, step: 1)
+                                    .padding(.horizontal)
+                            }
+                            
+                            Divider()
+                            
+                            VStack {
+                                Text("X Position: \(Int(widgetTextXAxis))")
+                                Slider(value: $widgetTextXAxis, in: 50...350, step: 10)
+                                    .padding(.horizontal)
+                            }
+                            
+                            VStack {
+                                Text("Y Position: \(Int(widgetTextYAxis))")
+                                Slider(value: $widgetTextYAxis, in: 30...170, step: 10)
+                                    .padding(.horizontal)
+                            }
+                            
+                            Divider()
+                            
+                            ColorPicker("Text Color", selection: $widgetTextColor)
+                                .padding(.horizontal)
+                        }
+                        
+                    }
                 }
+                .navigationTitle("Random Quote Widget")
             }
-            .navigationTitle("Random Quote Widget")
         }
     }
-}
+    
+    #Preview {
+        EditRandomQuoteView()
+    }
 
-#Preview {
-    EditRandomQuoteView()
-}

@@ -45,22 +45,23 @@ struct WidgetStack_ExtensionEntryView : View {
     var entry: Provider.Entry
 
     var body: some View {
-        // CHANGED: Replace analog clock with app data
+        
         ZStack {
-            // Background color from your app
+           
             Rectangle()
                 .fill(loadBackgroundColor())
-            
-            // Your custom text from the app
+                
+           
             if !loadWidgetText().isEmpty {
                 Text(loadWidgetText())
                     .font(.system(size: CGFloat(loadTextSize() / 3))) // Scale down for widget
                     .foregroundColor(loadTextColor())
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
-                    .padding(8)
+                    .padding(0)
+               
             } else {
-                // Default content when no text is set
+                
                 
             }
         }
