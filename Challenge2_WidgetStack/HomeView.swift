@@ -16,85 +16,88 @@ struct HomeView: View {
                 ScrollView {
                     VStack {
                         ForEach(widgets, id: \.self) { _ in
-                            SimpleExampleWidgetView()
+                            // Changed: Show saved widget data instead of plain blue
+                            SavedExampleWidgetView()
                         }
 
                         NavigationLink {
                             VStack {
-                                SimpleExampleWidgetView()
-                                
-                                HStack {
-                                    Text("Layers")
-                                        .padding()
-                                        .foregroundStyle(Color.gray)
-                                    Spacer()
+                                ZStack{
+                                    SavedExampleWidgetView()
                                 }
-                                
-                                Divider()
-                                
-                                HStack {
-                                    Text("Text")
-                                        .padding(.leading, 50)
-                                    Spacer()
-                                    NavigationLink {
-                                        EditTextView(WidgetImage: "default-image")
-                                    } label: {
-                                        Image(systemName: "chevron.right")
-                                            .padding(.trailing, 50)
-                                            .foregroundStyle(Color.black)
+                                    HStack {
+                                        Text("Layers")
+                                            .padding()
+                                            .foregroundStyle(Color.gray)
+                                        Spacer()
                                     }
-                                }
-                                
-                                Divider()
-                                
-                                HStack {
-                                    Text("Image")
-                                        .padding(.leading, 50)
-                                    Spacer()
-                                    NavigationLink {
-                                        EditImageView()
-                                    } label: {
-                                        Image(systemName: "chevron.right")
-                                            .padding(.trailing, 50)
-                                            .foregroundStyle(Color.black)
+                                    
+                                    Divider()
+                                    
+                                    HStack {
+                                        Text("Text")
+                                            .padding(.leading, 50)
+                                        Spacer()
+                                        NavigationLink {
+                                            EditTextView(WidgetImage: "default-image")
+                                        } label: {
+                                            Image(systemName: "chevron.right")
+                                                .padding(.trailing, 50)
+                                                .foregroundStyle(Color.black)
+                                        }
                                     }
-                                }
-                                
-                                Divider()
-                                
-                                HStack {
-                                    Text("Clock")
-                                        .padding(.leading, 50)
-                                    Spacer()
-                                    NavigationLink {
-                                        EditClockView()
-                                    } label: {
-                                        Image(systemName: "chevron.right")
-                                            .padding(.trailing, 50)
-                                            .foregroundStyle(Color.black)
+                                    
+                                    Divider()
+                                    
+                                    HStack {
+                                        Text("Image")
+                                            .padding(.leading, 50)
+                                        Spacer()
+                                        NavigationLink {
+                                            EditImageView()
+                                        } label: {
+                                            Image(systemName: "chevron.right")
+                                                .padding(.trailing, 50)
+                                                .foregroundStyle(Color.black)
+                                        }
                                     }
-                                }
-                                
-                                Divider()
-                                
-                                HStack {
-                                    Text("Random Quote")
-                                        .padding(.leading, 50)
-                                    Spacer()
-                                    NavigationLink {
-                                        EditRandomQuoteView()
-                                    } label: {
-                                        Image(systemName: "chevron.right")
-                                            .padding(.trailing, 50)
-                                            .foregroundStyle(Color.black)
+                                    
+                                    Divider()
+                                    
+                                    HStack {
+                                        Text("Clock")
+                                            .padding(.leading, 50)
+                                        Spacer()
+                                        NavigationLink {
+                                            EditClockView()
+                                        } label: {
+                                            Image(systemName: "chevron.right")
+                                                .padding(.trailing, 50)
+                                                .foregroundStyle(Color.black)
+                                        }
                                     }
+                                    
+                                    Divider()
+                                    
+                                    HStack {
+                                        Text("Random Quote")
+                                            .padding(.leading, 50)
+                                        Spacer()
+                                        NavigationLink {
+                                            EditRandomQuoteView()
+                                        } label: {
+                                            Image(systemName: "chevron.right")
+                                                .padding(.trailing, 50)
+                                                .foregroundStyle(Color.black)
+                                        }
+                                    }
+                                    
+                                    Spacer()
                                 }
-                                
-                                Spacer()
-                            }
                             .navigationTitle("Edit")
                         } label: {
-                            SimpleExampleWidgetView()
+                            // Changed: Show saved widget data instead of plain blue
+                            SavedExampleWidgetView()
                         }
                         .navigationTitle("Widgets Collection")
                     }
@@ -110,7 +113,8 @@ struct HomeView: View {
         }
     }
 }
-    struct SimpleExampleWidgetView: View {
+
+struct SimpleExampleWidgetView: View {
     var body: some View {
         VStack {
             Color.blue
@@ -120,7 +124,67 @@ struct HomeView: View {
         .padding()
     }
 }
-    struct ExampleWidgetView: View {
+
+// NEW: Widget view that loads and displays saved data
+struct SavedExampleWidgetView: View {
+    @State private var widgetColor: Color = .blue
+    @State private var widgetText: String = ""
+    @State private var widgetTextXAxis: Double = 200
+    @State private var widgetTextYAxis: Double = 100
+    @State private var widgetTextSize: Double = 50
+    @State private var widgetTextColor: Color = .black
+    
+    var body: some View {
+        ZStack {
+            VStack {
+                Color(widgetColor)
+            }
+            .frame(width: 342, height: 164)
+            .clipShape(RoundedRectangle(cornerRadius: 21))
+            .padding()
+            
+            if !widgetText.isEmpty {
+                Text(widgetText)
+                    .font(.system(size: CGFloat(widgetTextSize)))
+                    .foregroundColor(widgetTextColor)
+                    .multilineTextAlignment(.center)
+                    .padding()
+                    .frame(width: 342, height: 164)
+                    .position(x: CGFloat(widgetTextXAxis), y: CGFloat(widgetTextYAxis))
+                    .minimumScaleFactor(0.5)
+            }
+        }
+        .onAppear {
+            loadSavedData()
+        }
+    }
+    
+    private func loadSavedData() {
+        // Load the same data that EditTextView saves
+        widgetText = UserDefaults.standard.string(forKey: "savedWidgetText") ?? ""
+        widgetTextXAxis = UserDefaults.standard.double(forKey: "savedXAxis")
+        if widgetTextXAxis == 0 { widgetTextXAxis = 200 }
+        
+        widgetTextYAxis = UserDefaults.standard.double(forKey: "savedYAxis")
+        if widgetTextYAxis == 0 { widgetTextYAxis = 100 }
+        
+        widgetTextSize = UserDefaults.standard.double(forKey: "savedTextSize")
+        if widgetTextSize == 0 { widgetTextSize = 50 }
+        
+        // Load colors
+        if let colorData = UserDefaults.standard.data(forKey: "savedTextColor"),
+           let uiColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(colorData) as? UIColor {
+            widgetTextColor = Color(uiColor)
+        }
+        
+        if let bgColorData = UserDefaults.standard.data(forKey: "savedBGColor"),
+           let uiBGColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(bgColorData) as? UIColor {
+            widgetColor = Color(uiBGColor)
+        }
+    }
+}
+
+struct ExampleWidgetView: View {
     var WidgetImage: String
     @Binding var WidgetColor: Color
     @Binding var WidgetText: String
@@ -163,4 +227,3 @@ struct HomeView: View {
 #Preview {
     HomeView()
 }
-

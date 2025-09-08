@@ -50,13 +50,60 @@ struct EditTextView: View {
                     ColorPicker("Text Color", selection: $WidgetTextColor)
                         .padding(.leading, 50)
                         .padding(.trailing, 50)
+                    
+                    // Add Save button to persist data
+                    Button("Save") {
+                        // Save data using UserDefaults
+                        UserDefaults.standard.set(WidgetText, forKey: "savedWidgetText")
+                        UserDefaults.standard.set(WidgetTextXAxis, forKey: "savedXAxis")
+                        UserDefaults.standard.set(WidgetTextYAxis, forKey: "savedYAxis")
+                        UserDefaults.standard.set(WidgetTextSize, forKey: "savedTextSize")
+                        
+                        // Save color as data
+                        if let colorData = try? NSKeyedArchiver.archivedData(withRootObject: UIColor(WidgetTextColor), requiringSecureCoding: false) {
+                            UserDefaults.standard.set(colorData, forKey: "savedTextColor")
+                        }
+                        if let bgColorData = try? NSKeyedArchiver.archivedData(withRootObject: UIColor(WidgetColor), requiringSecureCoding: false) {
+                            UserDefaults.standard.set(bgColorData, forKey: "savedBGColor")
+                        }
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .padding()
                 }
             }
             .navigationTitle(Text("Edit Text"))
+            .onAppear {
+                // Load saved data when view appears
+                loadSavedData()
+            }
+        }
+    }
+    
+    private func loadSavedData() {
+        // Load text data
+        WidgetText = UserDefaults.standard.string(forKey: "savedWidgetText") ?? ""
+        WidgetTextXAxis = UserDefaults.standard.double(forKey: "savedXAxis")
+        if WidgetTextXAxis == 0 { WidgetTextXAxis = 200 } // Default value
+        
+        WidgetTextYAxis = UserDefaults.standard.double(forKey: "savedYAxis")
+        if WidgetTextYAxis == 0 { WidgetTextYAxis = 100 } // Default value
+        
+        WidgetTextSize = UserDefaults.standard.double(forKey: "savedTextSize")
+        if WidgetTextSize == 0 { WidgetTextSize = 50 } // Default value
+        
+        // Load colors
+        if let colorData = UserDefaults.standard.data(forKey: "savedTextColor"),
+           let uiColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(colorData) as? UIColor {
+            WidgetTextColor = Color(uiColor)
+        }
+        
+        if let bgColorData = UserDefaults.standard.data(forKey: "savedBGColor"),
+           let uiBGColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(bgColorData) as? UIColor {
+            WidgetColor = Color(uiBGColor)
         }
     }
 }
 
 #Preview {
-    EditTextView(WidgetImage: "example-image") 
+    EditTextView(WidgetImage: "example-image")
 }
