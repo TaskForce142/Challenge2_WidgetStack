@@ -114,16 +114,7 @@ struct HomeView: View {
     }
 }
 
-struct SimpleExampleWidgetView: View {
-    var body: some View {
-        VStack {
-            Color.blue
-        }
-        .frame(width: 342, height: 164)
-        .clipShape(RoundedRectangle(cornerRadius: 21))
-        .padding()
-    }
-}
+
 
 // NEW: Widget view that loads and displays saved data
 struct SavedExampleWidgetView: View {
@@ -134,10 +125,12 @@ struct SavedExampleWidgetView: View {
     @State private var widgetTextSize: Double = 50
     @State private var widgetTextColor: Color = .black
     
+    private let sharedDefaults = UserDefaults(suiteName: "group.org.yourname.Challenge2-WidgetStack")!
+    
     var body: some View {
         ZStack {
             VStack {
-                Color(widgetColor)
+                widgetColor
             }
             .frame(width: 342, height: 164)
             .clipShape(RoundedRectangle(cornerRadius: 21))
@@ -154,35 +147,32 @@ struct SavedExampleWidgetView: View {
                     .minimumScaleFactor(0.5)
             }
         }
-        .onAppear {
-            loadSavedData()
-        }
+        .onAppear { loadSavedData() }
     }
     
     private func loadSavedData() {
-        // Load the same data that EditTextView saves
-        widgetText = UserDefaults.standard.string(forKey: "savedWidgetText") ?? ""
-        widgetTextXAxis = UserDefaults.standard.double(forKey: "savedXAxis")
+        widgetText = sharedDefaults.string(forKey: "savedWidgetText") ?? ""
+        widgetTextXAxis = sharedDefaults.double(forKey: "savedXAxis")
         if widgetTextXAxis == 0 { widgetTextXAxis = 200 }
         
-        widgetTextYAxis = UserDefaults.standard.double(forKey: "savedYAxis")
+        widgetTextYAxis = sharedDefaults.double(forKey: "savedYAxis")
         if widgetTextYAxis == 0 { widgetTextYAxis = 100 }
         
-        widgetTextSize = UserDefaults.standard.double(forKey: "savedTextSize")
+        widgetTextSize = sharedDefaults.double(forKey: "savedTextSize")
         if widgetTextSize == 0 { widgetTextSize = 50 }
         
-        // Load colors
-        if let colorData = UserDefaults.standard.data(forKey: "savedTextColor"),
+        if let colorData = sharedDefaults.data(forKey: "savedTextColor"),
            let uiColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(colorData) as? UIColor {
             widgetTextColor = Color(uiColor)
         }
         
-        if let bgColorData = UserDefaults.standard.data(forKey: "savedBGColor"),
+        if let bgColorData = sharedDefaults.data(forKey: "savedBGColor"),
            let uiBGColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(bgColorData) as? UIColor {
             widgetColor = Color(uiBGColor)
         }
     }
 }
+
 
 struct ExampleWidgetView: View {
     var WidgetImage: String

@@ -41,67 +41,74 @@ struct SimpleEntry: TimelineEntry {
     let configuration: ConfigurationAppIntent
 }
 
-struct WidgetStack_ExtensionEntryView : View {
-    var entry: Provider.Entry
 
+struct WidgetStack_ExtensionEntryView: View {
+    var entry: Provider.Entry
+    private let sharedDefaults = UserDefaults(suiteName: "group.org.yourname.Challenge2-WidgetStack")!
+    
     var body: some View {
-        
         ZStack {
-           
             Rectangle()
                 .fill(loadBackgroundColor())
-                
-           
+            
             if !loadWidgetText().isEmpty {
                 Text(loadWidgetText())
-                    .font(.system(size: CGFloat(loadTextSize() / 3))) // Scale down for widget
+                    .font(.system(size: CGFloat(loadTextSize() / 3)))
                     .foregroundColor(loadTextColor())
                     .multilineTextAlignment(.center)
                     .lineLimit(3)
-                    .padding(0)
-               
+                    .padding(8)
             } else {
-                
-                
+                VStack {
+                    Text("No Data Found")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
             }
         }
         .widgetURL(URL(string: "challenge2://open"))
     }
     
-    // ADDED: Helper functions to load shared data
-    private func loadWidgetText() -> String {
-        guard let sharedDefaults = UserDefaults(suiteName: "group.yourcompany.challenge2.widgets") else {
-            return ""
-        }
-        return sharedDefaults.string(forKey: "savedWidgetText") ?? ""
-    }
+    // MARK: - Helpers
     
+    private func loadWidgetText() -> String {
+        guard let sharedDefaults = UserDefaults(suiteName: "group.org.yourname.Challenge2-WidgetStack") else {
+            return "No Data Found"
+        }
+        return sharedDefaults.string(forKey: "savedWidgetText") ?? "No Data Found"
+    }
+
     private func loadTextSize() -> Double {
-        guard let sharedDefaults = UserDefaults(suiteName: "group.yourcompany.challenge2.widgets") else {
-            return 50
+        guard let sharedDefaults = UserDefaults(suiteName: "group.org.yourname.Challenge2-WidgetStack") else {
+            return 16
         }
         let size = sharedDefaults.double(forKey: "savedTextSize")
-        return size == 0 ? 50 : size
+        return size == 0 ? 16 : size
     }
-    
+
     private func loadTextColor() -> Color {
-        guard let sharedDefaults = UserDefaults(suiteName: "group.yourcompany.challenge2.widgets"),
+        guard let sharedDefaults = UserDefaults(suiteName: "group.org.yourname.Challenge2-WidgetStack"),
               let colorData = sharedDefaults.data(forKey: "savedTextColor"),
               let uiColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(colorData) as? UIColor else {
-            return .black
+            return .primary
         }
         return Color(uiColor)
     }
-    
+
     private func loadBackgroundColor() -> Color {
-        guard let sharedDefaults = UserDefaults(suiteName: "group.yourcompany.challenge2.widgets"),
+        guard let sharedDefaults = UserDefaults(suiteName: "group.org.yourname.Challenge2-WidgetStack"),
               let bgColorData = sharedDefaults.data(forKey: "savedBGColor"),
-              let uiBGColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(bgColorData) as? UIColor else {
+              let uiColor = try? NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(bgColorData) as? UIColor else {
             return .blue
         }
-        return Color(uiBGColor)
+        return Color(uiColor)
     }
+
 }
+
+    
+
+
 
 struct WidgetStack_Extension: Widget {
     let kind: String = "WidgetStack_Extension"
@@ -111,6 +118,7 @@ struct WidgetStack_Extension: Widget {
             WidgetStack_ExtensionEntryView(entry: entry)
                 .containerBackground(.fill.tertiary, for: .widget)
         }
+        .contentMarginsDisabled() // Disables content margins for the entire widget
     }
 }
 
@@ -132,5 +140,5 @@ extension ConfigurationAppIntent {
     WidgetStack_Extension()
 } timeline: {
     SimpleEntry(date: .now, configuration: .smiley)
-    SimpleEntry(date: .now, configuration: .starEyes)
+//    SimpleEntry(date: .now, configuration: .starEyes)
 }
